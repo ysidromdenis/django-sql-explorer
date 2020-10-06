@@ -1,6 +1,6 @@
 from django.apps import AppConfig
-from django.db import connections as djcs
 from django.core.exceptions import ImproperlyConfigured
+from django.db import connections as djcs
 
 
 class ExplorerAppConfig(AppConfig):

@@ -1,7 +1,8 @@
-from explorer.apps import _validate_connections
 from django.test import TestCase
 from django.core.exceptions import ImproperlyConfigured
 from mock import patch
+
+from explorer.apps import _validate_connections
 
 
 class TestApps(TestCase):

@@ -1,10 +1,13 @@
 from django.test import TestCase
+from mock import Mock
+
 from explorer.actions import generate_report_action
 from explorer.tests.factories import SimpleQueryFactory
 from explorer import app_settings
-from explorer.utils import passes_blacklist, param, swap_params, extract_params,\
-    shared_dict_update, EXPLORER_PARAM_TOKEN, get_params_from_request, get_params_for_url
-from mock import Mock
+from explorer.utils import (
+    passes_blacklist, param, swap_params, extract_params, shared_dict_update,
+    EXPLORER_PARAM_TOKEN, get_params_from_request, get_params_for_url
+)
 
 
 class TestSqlBlacklist(TestCase):

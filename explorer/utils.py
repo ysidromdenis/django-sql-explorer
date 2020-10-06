@@ -4,7 +4,6 @@ import re
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from six import text_type
 import sqlparse
 
 from explorer import app_settings
@@ -13,8 +12,14 @@ EXPLORER_PARAM_TOKEN = "$$"
 
 
 def passes_blacklist(sql):
-    clean = functools.reduce(lambda sql, term: sql.upper().replace(term, ""), [t.upper() for t in app_settings.EXPLORER_SQL_WHITELIST], sql)
-    fails = [bl_word for bl_word in app_settings.EXPLORER_SQL_BLACKLIST if bl_word in clean.upper()]
+    clean = functools.reduce(
+        lambda sql, term: sql.upper().replace(term, ""),
+        [t.upper()for t in app_settings.EXPLORER_SQL_WHITELIST], sql
+    )
+    fails = [
+        bl_word for bl_word in app_settings.EXPLORER_SQL_BLACKLIST if
+        bl_word in clean.upper()
+    ]
     return not any(fails), fails
 
 
@@ -30,7 +35,7 @@ def swap_params(sql, params):
     p = params.items() if params else {}
     for k, v in p:
         regex = re.compile("\$\$%s(?:\:([^\$]+))?\$\$" % str(k).lower(), re.I)
-        sql = regex.sub(text_type(v), sql)
+        sql = regex.sub(str(v), sql)
     return sql
 
 
@@ -91,7 +96,9 @@ def get_params_for_url(query):
 
 
 def url_get_rows(request):
-    return get_int_from_request(request, 'rows', app_settings.EXPLORER_DEFAULT_ROWS)
+    return get_int_from_request(
+        request, 'rows', app_settings.EXPLORER_DEFAULT_ROWS
+    )
 
 
 def url_get_query_id(request):
@@ -149,7 +156,8 @@ def get_valid_connection(alias=None):
 
     if alias not in connections:
         raise InvalidExplorerConnectionException(
-            'Attempted to access connection %s, but that is not a registered Explorer connection.' % alias
+            'Attempted to access connection %s, but that is not a '
+            'registered Explorer connection.' % alias
         )
     return connections[alias]
 
@@ -157,8 +165,10 @@ def get_valid_connection(alias=None):
 def get_s3_bucket():
     from boto.s3.connection import S3Connection
 
-    conn = S3Connection(app_settings.S3_ACCESS_KEY,
-                        app_settings.S3_SECRET_KEY)
+    conn = S3Connection(
+        app_settings.S3_ACCESS_KEY,
+        app_settings.S3_SECRET_KEY
+    )
     return conn.get_bucket(app_settings.S3_BUCKET)
 
 

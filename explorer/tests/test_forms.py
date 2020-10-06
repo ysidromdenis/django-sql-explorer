@@ -1,7 +1,8 @@
-from django.test import TestCase
 from django.forms.models import model_to_dict
-from explorer.tests.factories import SimpleQueryFactory
+from django.test import TestCase
+
 from explorer.forms import QueryForm
+from explorer.tests.factories import SimpleQueryFactory
 
 
 class TestFormValidation(TestCase):

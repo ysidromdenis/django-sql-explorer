@@ -1,6 +1,6 @@
 from django.conf import settings
 
-# The 'correct' configuration for Explorer going forward and for new installs looks like:
+# The 'correct' configuration for Explorer looks like:
 
 # EXPLORER_CONNECTIONS = {
 #   'Original Database': 'my_important_database_readonly_connection',

@@ -1,8 +1,11 @@
-from django.db import DatabaseError
-from django.forms import ModelForm, Field, ValidationError, BooleanField, CharField
+from django.forms import (
+    ModelForm, Field, ValidationError, BooleanField, CharField
+)
 from django.forms.widgets import CheckboxInput, Select
 
-from explorer.app_settings import EXPLORER_DEFAULT_CONNECTION, EXPLORER_CONNECTIONS
+from explorer.app_settings import (
+    EXPLORER_DEFAULT_CONNECTION, EXPLORER_CONNECTIONS
+)
 from explorer.models import Query, MSG_FAILED_BLACKLIST
 
 
@@ -19,7 +22,8 @@ class SqlField(Field):
 
         passes_blacklist, failing_words = query.passes_blacklist()
 
-        error = MSG_FAILED_BLACKLIST % ', '.join(failing_words) if not passes_blacklist else None
+        error = MSG_FAILED_BLACKLIST % ', '.join(
+            failing_words) if not passes_blacklist else None
 
         if error:
             raise ValidationError(
@@ -35,7 +39,7 @@ class QueryForm(ModelForm):
     connection = CharField(widget=Select, required=False)
 
     def __init__(self, *args, **kwargs):
-        super(QueryForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['connection'].widget.choices = self.connections
         if not self.instance.connection:
             self.initial['connection'] = EXPLORER_DEFAULT_CONNECTION
@@ -44,11 +48,12 @@ class QueryForm(ModelForm):
     def clean(self):
         if self.instance and self.data.get('created_by_user', None):
             self.cleaned_data['created_by_user'] = self.instance.created_by_user
-        return super(QueryForm, self).clean()
+        return super().clean()
 
     @property
     def created_by_user_email(self):
-        return self.instance.created_by_user.email if self.instance.created_by_user else '--'
+        return self.instance.created_by_user.email if \
+            self.instance.created_by_user else '--'
 
     @property
     def created_at_time(self):
